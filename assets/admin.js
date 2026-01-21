@@ -1,5 +1,6 @@
 const API_BASE = "https://loto-backend-k9kh.onrender.com/api";
 let token = localStorage.getItem("token");
+let role = localStorage.getItem("role");
 
 // =========================
 // LOGIN ADMIN
@@ -18,16 +19,22 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
   const data = await res.json();
 
-  if (res.ok && data.token) {
-    if (data.role !== "admin") {
-      alert("Ce compte n'est pas administrateur.");
-      return;
-    }
-    localStorage.setItem("token", data.token);
-    location.reload();
-  } else {
+  if (!res.ok) {
     alert(data.error || "Identifiants incorrects");
+    return;
   }
+
+  // 🔥 Vérification du rôle admin
+  if (data.role !== "admin") {
+    alert("Ce compte n'est pas administrateur.");
+    return;
+  }
+
+  // 🔥 On stocke le rôle
+  localStorage.setItem("token", data.token);
+  localStorage.setItem("role", data.role);
+
+  location.reload();
 });
 
 // =========================
@@ -114,16 +121,8 @@ function renderReservations(reservations) {
       <p><strong>${r.name || r.username || "Utilisateur"}</strong> - ${r.quantity} cartons</p>
       <p>Événement #${r.event_id} | Statut : <strong>${r.status}</strong></p>
       <p>
-        ${
-      r.user_email || r.email
-        ? `Email : ${r.user_email || r.email}<br>`
-        : ""
-    }
-        ${
-      r.user_phone || r.phone
-        ? `Téléphone : ${r.user_phone || r.phone}`
-        : ""
-    }
+        ${r.user_email || r.email ? `Email : ${r.user_email || r.email}<br>` : ""}
+        ${r.user_phone || r.phone ? `Téléphone : ${r.user_phone || r.phone}` : ""}
       </p>
       <button data-id="${r.id}" data-status="confirmed">Confirmer</button>
       <button data-id="${r.id}" data-status="paid">Marquer payé</button>
@@ -148,8 +147,10 @@ function renderReservations(reservations) {
 // =========================
 async function initAdmin() {
   token = localStorage.getItem("token");
+  role = localStorage.getItem("role");
 
-  if (!token) {
+  // 🔥 Vérification stricte du rôle admin
+  if (!token || role !== "admin") {
     document.getElementById("login-section").style.display = "block";
     document.getElementById("admin-panel").style.display = "none";
     return;

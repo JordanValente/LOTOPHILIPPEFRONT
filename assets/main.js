@@ -1,5 +1,6 @@
 const API_BASE = "https://loto-backend-k9kh.onrender.com/api";
 let token = localStorage.getItem("token");
+let role = localStorage.getItem("role");
 
 // =========================
 // UI helpers
@@ -39,6 +40,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
   if (res.ok && data.token) {
     localStorage.setItem("token", data.token);
+    localStorage.setItem("role", data.role); // 🔥 IMPORTANT
     location.reload();
   } else {
     alert(data.error || "Identifiants incorrects");
@@ -174,6 +176,7 @@ async function loadUserReservations() {
 // =========================
 document.getElementById("logout-btn").addEventListener("click", () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("role"); // 🔥 IMPORTANT
   location.reload();
 });
 
@@ -184,14 +187,12 @@ async function init() {
   await loadEvents();
 
   if (!token) {
-    // Non connecté : on montre login/register, on cache "Mes réservations"
     document.getElementById("login-section").style.display = "block";
     document.getElementById("register-section").style.display = "none";
     document.getElementById("my-reservations").style.display = "none";
     return;
   }
 
-  // Connecté
   document.getElementById("logout-btn").style.display = "inline-block";
   document.getElementById("login-section").style.display = "none";
   document.getElementById("register-section").style.display = "none";
@@ -202,5 +203,4 @@ async function init() {
 
 init();
 
-// Pour que reserve() soit accessible depuis le HTML
 window.reserve = reserve;

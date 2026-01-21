@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Association de Loto - Accueil</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header>
+  <h1>Association de Loto</h1>
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="admin.html">Espace admin</a>
+    <a href="tirage.html">Tirage</a>
+  </nav>
+</header>
+
+<main>
+  <section id="events">
+    <h2>Prochains lotos</h2>
+    <div id="events-list"></div>
+  </section>
+
+  <section id="reservation">
+    <h2>Réserver des places</h2>
+    <form id="reservation-form">
+      <label>
+        Événement
+        <select id="event-select" name="event_id"></select>
+      </label>
+      <label>
+        Nom complet
+        <input type="text" name="name" required>
+      </label>
+      <label>
+        Téléphone
+        <input type="text" name="phone">
+      </label>
+      <label>
+        Email
+        <input type="email" name="email">
+      </label>
+      <label>
+        Nombre de cartons
+        <input type="number" name="quantity" min="1" value="1" required>
+      </label>
+      <button type="submit">Envoyer la réservation</button>
+    </form>
+    <div id="reservation-message"></div>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; Association de Loto</p>
+</footer>
+
+<script src="assets/main.js"></script>
+</body>
+</html>

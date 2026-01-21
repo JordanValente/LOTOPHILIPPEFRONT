@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Tirage du Loto</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .tirage-container {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .roulette {
+      font-size: 5rem;
+      font-weight: bold;
+      margin: 2rem 0;
+      color: #2b4c7e;
+    }
+
+    .history {
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .history span {
+      background: #2b4c7e;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button {
+      margin: 0.5rem;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Tirage du Loto</h1>
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="admin.html">Admin</a>
+    <a href="tirage.html">Tirage</a>
+  </nav>
+</header>
+
+<main class="tirage-container">
+  <div style="margin-bottom: 2rem;">
+    <h3>Mode de tirage</h3>
+
+    <button class="variant-btn mode-btn" data-max="75">75 numéros</button>
+    <button class="variant-btn mode-btn" data-max="99">99 numéros</button>
+    <button class="variant-btn mode-btn" data-max="custom">Personnalisé</button>
+    <button class="variant-btn mode-btn" data-max="normal">Classique</button>
+
+
+
+    <div id="custom-range-container" style="margin-top: 1rem; display:none;">
+      <label>
+        Valeur maximale : <span id="custom-value">90</span>
+        <input type="range" id="custom-range" min="10" max="200" value="90">
+      </label>
+    </div>
+  </div>
+
+  <div class="roulette" id="roulette">--</div>
+
+  <button id="draw-btn">Tirer un numéro</button>
+  <button id="reset-btn">Réinitialiser</button>
+
+  <h2>Numéros sortis</h2>
+  <div class="history" id="history"></div>
+</main>
+
+<script src="assets/tirage.js"></script>
+</body>
+</html>

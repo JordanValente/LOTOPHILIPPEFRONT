@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Association de Loto</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header>
+  <h1>Admin Loto</h1>
+  <nav>
+    <a href="index.html">Accueil public</a>
+    <a href="tirage.html">Tirage</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2>Créer un événement</h2>
+    <form id="event-form">
+      <label>Titre
+        <input type="text" name="title" required>
+      </label>
+      <label>Date et heure
+        <input type="datetime-local" name="date" required>
+      </label>
+      <label>Lieu
+        <input type="text" name="location" required>
+      </label>
+      <label>Description
+        <textarea name="description"></textarea>
+      </label>
+      <label>Prix du carton (€)
+        <input type="number" name="ticket_price" step="0.1" required>
+      </label>
+      <label>Nombre maximum de places
+        <input type="number" name="max_places" required>
+      </label>
+      <button type="submit">Créer</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Événements</h2>
+    <div id="admin-events"></div>
+  </section>
+
+  <section>
+    <h2>Réservations</h2>
+    <div id="admin-reservations"></div>
+  </section>
+</main>
+
+<script src="assets/admin.js"></script>
+</body>
+</html>

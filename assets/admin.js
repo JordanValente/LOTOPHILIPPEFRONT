@@ -1,35 +1,88 @@
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = "https://loto-backend-k9kh.onrender.com/api";
 
+// Récupération du token
+const token = localStorage.getItem("token");
+
+// =========================
+// LOGIN ADMIN
+// =========================
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const username = e.target.username.value;
+  const password = e.target.password.value;
+
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
+
+  const data = await res.json();
+
+  if (data.token) {
+    localStorage.setItem("token", data.token);
+    location.reload();
+  } else {
+    alert("Identifiants incorrects");
+  }
+});
+
+// =========================
+// FETCH EVENTS (SECURISE)
+// =========================
 async function fetchEvents() {
-  const res = await fetch(`${API_BASE}/events`);
+  const res = await fetch(`${API_BASE}/events`, {
+    headers: { "Authorization": `Bearer ${token}` }
+  });
   return res.json();
 }
 
+// =========================
+// FETCH RESERVATIONS (SECURISE)
+// =========================
 async function fetchReservations() {
-  const res = await fetch(`${API_BASE}/reservations`);
+  const res = await fetch(`${API_BASE}/reservations`, {
+    headers: { "Authorization": `Bearer ${token}` }
+  });
   return res.json();
 }
 
+// =========================
+// CREATE EVENT (SECURISE)
+// =========================
 async function createEvent(data) {
   const res = await fetch(`${API_BASE}/events`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": `Bearer ${token}`
+    },
     body: JSON.stringify(data)
   });
   if (!res.ok) throw new Error('Erreur création événement');
   return res.json();
 }
 
+// =========================
+// UPDATE RESERVATION STATUS (SECURISE)
+// =========================
 async function updateReservationStatus(id, status) {
   const res = await fetch(`${API_BASE}/reservations/${id}/status`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": `Bearer ${token}`
+    },
     body: JSON.stringify({ status })
   });
   if (!res.ok) throw new Error('Erreur mise à jour statut');
   return res.json();
 }
 
+// =========================
+// RENDER EVENTS
+// =========================
 function renderEvents(events) {
   const container = document.getElementById('admin-events');
   container.innerHTML = '';
@@ -46,6 +99,9 @@ function renderEvents(events) {
   });
 }
 
+// =========================
+// RENDER RESERVATIONS
+// =========================
 function renderReservations(reservations) {
   const container = document.getElementById('admin-reservations');
   container.innerHTML = '';
@@ -74,14 +130,27 @@ function renderReservations(reservations) {
   }, { once: true });
 }
 
+// =========================
+// INITIALISATION ADMIN
+// =========================
 async function initAdmin() {
+
+  // Si pas de token → on bloque l'accès
+  if (!token) {
+    document.querySelector("main").innerHTML = `
+      <p style="color:red; text-align:center; font-size:1.2rem;">
+        Vous devez être connecté pour accéder à l'administration.
+      </p>
+    `;
+    return;
+  }
+
   const form = document.getElementById('event-form');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(form).entries());
     data.ticket_price = Number(data.ticket_price);
     data.max_places = Number(data.max_places);
-    // datetime-local -> ISO
     data.date = new Date(data.date).toISOString();
 
     await createEvent(data);

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <title>Admin - Association de Loto</title>
   <link rel="stylesheet" href="assets/style.css">
@@ -15,6 +16,19 @@
 </header>
 
 <main>
+  <section>
+    <h2>Connexion admin</h2>
+    <form id="login-form">
+      <label>Nom d'utilisateur
+        <input type="text" name="username" required>
+      </label>
+      <label>Mot de passe
+        <input type="password" name="password" required>
+      </label>
+      <button type="submit">Se connecter</button>
+    </form>
+  </section>
+
   <section>
     <h2>Créer un événement</h2>
     <form id="event-form">

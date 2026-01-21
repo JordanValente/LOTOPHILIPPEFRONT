@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = "https://loto-backend-k9kh.onrender.com/api";
 
 async function fetchEvents() {
   const res = await fetch(`${API_BASE}/events`);

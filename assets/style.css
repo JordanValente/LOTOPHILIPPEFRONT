@@ -109,3 +109,211 @@ footer {
   background: #eee;
   margin-top: 2rem;
 }
+
+/* ============================
+   RESPONSIVE DESIGN
+   ============================ */
+
+/* --- 1) Header responsive --- */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  header nav {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  header nav a {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+}
+
+/* --- 2) Main container --- */
+@media (max-width: 768px) {
+  main {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
+
+  section {
+    padding: 1rem;
+  }
+}
+
+/* --- 3) Event cards --- */
+@media (max-width: 600px) {
+  .event-card {
+    padding: 1rem 0;
+  }
+
+  .event-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .event-card p {
+    font-size: 0.95rem;
+  }
+}
+
+/* --- 4) Forms --- */
+@media (max-width: 600px) {
+  form label {
+    font-size: 0.95rem;
+  }
+
+  input, select, button {
+    font-size: 1rem;
+    padding: 0.6rem;
+  }
+}
+
+/* --- 5) Buttons (mode-btn + normal buttons) --- */
+@media (max-width: 600px) {
+  .mode-btn {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 0.7rem;
+  }
+}
+
+/* --- 6) Footer --- */
+@media (max-width: 600px) {
+  footer {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+}
+
+/* --- 7) Typography fluid --- */
+h1, h2, h3, p {
+  line-height: 1.4;
+}
+
+h1 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+}
+
+h2 {
+  font-size: clamp(1.3rem, 3.5vw, 1.9rem);
+}
+
+p {
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+}
+/* ============================
+   RESPONSIVE DESIGN ADMIN
+   ============================ */
+
+/* --- 1) Header responsive --- */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  header nav {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  header nav a {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+}
+
+/* --- 2) Main container --- */
+@media (max-width: 768px) {
+  main {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
+
+  section {
+    padding: 1rem;
+  }
+}
+
+/* --- 3) Formulaire responsive --- */
+@media (max-width: 600px) {
+  form label {
+    font-size: 0.95rem;
+  }
+
+  input, select, textarea, button {
+    font-size: 1rem;
+    padding: 0.6rem;
+  }
+
+  textarea {
+    min-height: 80px;
+  }
+}
+
+/* --- 4) Listes d'événements et réservations --- */
+@media (max-width: 600px) {
+  #admin-events .event-card,
+  #admin-reservations .reservation-card {
+    padding: 1rem 0;
+  }
+
+  .event-card h3,
+  .reservation-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .event-card p,
+  .reservation-card p {
+    font-size: 0.95rem;
+  }
+}
+
+/* --- 5) Boutons --- */
+@media (max-width: 600px) {
+  button {
+    font-size: 1rem;
+    padding: 0.7rem;
+  }
+}
+
+/* --- 6) Footer --- */
+@media (max-width: 600px) {
+  footer {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+}
+
+/* --- 7) Typographie fluide --- */
+h1, h2, h3, p {
+  line-height: 1.4;
+}
+
+h1 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+}
+
+h2 {
+  font-size: clamp(1.3rem, 3.5vw, 1.9rem);
+}
+
+p {
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+}
+

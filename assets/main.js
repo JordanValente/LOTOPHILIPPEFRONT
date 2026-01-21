@@ -1,63 +1,157 @@
 const API_BASE = "https://loto-backend-k9kh.onrender.com/api";
+let token = localStorage.getItem("token");
 
+// =========================
+// LOGIN
+// =========================
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const username = e.target.username.value;
+  const password = e.target.password.value;
+
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
+
+  const data = await res.json();
+
+  if (data.token) {
+    localStorage.setItem("token", data.token);
+    location.reload();
+  } else {
+    alert("Identifiants incorrects");
+  }
+});
+
+// =========================
+// REGISTER
+// =========================
+document.getElementById("register-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = Object.fromEntries(new FormData(e.target).entries());
+
+  const res = await fetch(`${API_BASE}/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData)
+  });
+
+  if (res.ok) {
+    alert("Compte créé ! Vous pouvez vous connecter.");
+  } else {
+    alert("Erreur lors de l'inscription.");
+  }
+});
+
+// =========================
+// FETCH EVENTS
+// =========================
 async function fetchEvents() {
-  const res = await fetch(`${API_BASE}/events`);
+  const res = await fetch(`${API_BASE}/events-public`);
   return res.json();
 }
 
-function renderEvents(events) {
-  const list = document.getElementById('events-list');
-  const select = document.getElementById('event-select');
-  list.innerHTML = '';
-  select.innerHTML = '';
+// =========================
+// USER RESERVATION
+// =========================
+async function reserve(eventId, quantity) {
+  const res = await fetch(`${API_BASE}/user/reservations`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({ event_id: eventId, quantity })
+  });
+
+  if (res.ok) {
+    alert("Réservation effectuée !");
+    loadUserReservations();
+  } else {
+    alert("Erreur lors de la réservation.");
+  }
+}
+
+// =========================
+// LOAD USER RESERVATIONS
+// =========================
+async function loadUserReservations() {
+  const res = await fetch(`${API_BASE}/user/reservations`, {
+    headers: { "Authorization": `Bearer ${token}` }
+  });
+
+  const reservations = await res.json();
+  const container = document.getElementById("user-reservations");
+  container.innerHTML = "";
+
+  reservations.forEach(r => {
+    const div = document.createElement("div");
+    div.className = "event-card";
+    div.innerHTML = `
+      <p><strong>Événement #${r.event_id}</strong></p>
+      <p>Quantité : ${r.quantity}</p>
+      <p>Statut : ${r.status}</p>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// =========================
+// DISPLAY EVENTS
+// =========================
+async function loadEvents() {
+  const events = await fetchEvents();
+  const container = document.getElementById("events");
+  container.innerHTML = "";
 
   events.forEach(ev => {
-    const div = document.createElement('div');
-    div.className = 'event-card';
+    const div = document.createElement("div");
+    div.className = "event-card";
     div.innerHTML = `
       <h3>${ev.title}</h3>
-      <p><strong>Date :</strong> ${new Date(ev.date).toLocaleString('fr-FR')}</p>
-      <p><strong>Lieu :</strong> ${ev.location}</p>
-      <p>${ev.description || ''}</p>
-      <p><strong>Prix du carton :</strong> ${ev.ticket_price} €</p>
+      <p>${new Date(ev.date).toLocaleString("fr-FR")} - ${ev.location}</p>
+      <p>${ev.description || ""}</p>
+      <p>Prix : ${ev.ticket_price} €</p>
+
+      <label>Nombre de cartons :
+        <input type="number" id="qty-${ev.id}" min="1" value="1">
+      </label>
+      <button onclick="reserve(${ev.id}, document.getElementById('qty-${ev.id}').value)">
+        Réserver
+      </button>
     `;
-    list.appendChild(div);
-
-    const option = document.createElement('option');
-    option.value = ev.id;
-    option.textContent = `${ev.title} - ${new Date(ev.date).toLocaleDateString('fr-FR')}`;
-    select.appendChild(option);
+    container.appendChild(div);
   });
 }
 
+// =========================
+// LOGOUT
+// =========================
+document.getElementById("logout-btn").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  location.reload();
+});
+
+// =========================
+// INIT
+// =========================
 async function init() {
-  const events = await fetchEvents();
-  renderEvents(events);
+  if (!token) {
+    document.getElementById("login-section").style.display = "block";
+    return;
+  }
 
-  const form = document.getElementById('reservation-form');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(form).entries());
-    data.quantity = Number(data.quantity);
+  document.getElementById("logout-btn").style.display = "inline-block";
+  document.getElementById("login-section").style.display = "none";
+  document.getElementById("events-section").style.display = "block";
+  document.getElementById("my-reservations").style.display = "block";
 
-    const res = await fetch(`${API_BASE}/reservations`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-
-    const msgDiv = document.getElementById('reservation-message');
-    if (!res.ok) {
-      const err = await res.json();
-      msgDiv.textContent = `Erreur : ${err.error || 'Impossible d\'enregistrer la réservation'}`;
-      msgDiv.className = 'error';
-      return;
-    }
-
-    msgDiv.textContent = 'Votre réservation a bien été enregistrée. Vous serez contacté pour confirmation.';
-    msgDiv.className = 'success';
-    form.reset();
-  });
+  await loadEvents();
+  await loadUserReservations();
 }
 
-document.addEventListener('DOMContentLoaded', init);
+init();

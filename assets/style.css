@@ -175,6 +175,11 @@ footer {
   }
 }
 
+#admin-panel {
+  display: none;
+}
+
+
 /* --- 5) Buttons (mode-btn + normal buttons) --- */
 @media (max-width: 600px) {
   .mode-btn {

@@ -1,59 +1,69 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
-  <title>Association de Loto - Accueil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Association de Loto</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
+
 <body>
+
 <header>
   <h1>Association de Loto</h1>
   <nav>
-    <a href="index.html">Accueil</a>
-    <a href="admin.html">Espace admin</a>
-    <a href="tirage.html">Tirage</a>
+    <a href="admin.html">Admin</a>
+    <a href="#" id="logout-btn" style="display:none;">Déconnexion</a>
   </nav>
 </header>
 
 <main>
-  <section id="events">
-    <h2>Prochains lotos</h2>
-    <div id="events-list"></div>
-  </section>
 
-  <section id="reservation">
-    <h2>Réserver des places</h2>
-    <form id="reservation-form">
-      <label>
-        Événement
-        <select id="event-select" name="event_id"></select>
+  <!-- Connexion utilisateur -->
+  <section id="login-section">
+    <h2>Connexion</h2>
+    <form id="login-form">
+      <label>Nom d'utilisateur
+        <input type="text" name="username" required>
       </label>
-      <label>
-        Nom complet
-        <input type="text" name="name" required>
+      <label>Mot de passe
+        <input type="password" name="password" required>
       </label>
-      <label>
-        Téléphone
-        <input type="text" name="phone">
-      </label>
-      <label>
-        Email
-        <input type="email" name="email">
-      </label>
-      <label>
-        Nombre de cartons
-        <input type="number" name="quantity" min="1" value="1" required>
-      </label>
-      <button type="submit">Envoyer la réservation</button>
+      <button type="submit">Se connecter</button>
     </form>
-    <div id="reservation-message"></div>
-  </section>
-</main>
 
-<footer>
-  <p>&copy; Association de Loto</p>
-</footer>
+    <p>Pas encore de compte ?</p>
+
+    <form id="register-form">
+      <label>Nom d'utilisateur
+        <input type="text" name="username" required>
+      </label>
+      <label>Email
+        <input type="email" name="email" required>
+      </label>
+      <label>Téléphone
+        <input type="text" name="phone" required>
+      </label>
+      <label>Mot de passe
+        <input type="password" name="password" required>
+      </label>
+      <button type="submit">Créer un compte</button>
+    </form>
+  </section>
+
+  <!-- Liste des événements -->
+  <section id="events-section" style="display:none;">
+    <h2>Événements</h2>
+    <div id="events"></div>
+  </section>
+
+  <!-- Réservations utilisateur -->
+  <section id="my-reservations" style="display:none;">
+    <h2>Mes réservations</h2>
+    <div id="user-reservations"></div>
+  </section>
+
+</main>
 
 <script src="assets/main.js"></script>
 </body>
